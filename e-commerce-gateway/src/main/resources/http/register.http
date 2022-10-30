@@ -1,0 +1,7 @@
+POST 127.0.0.1:9001/gateway/e-commerce/register
+Content-Type: application/json
+
+{
+  "username": "rainy1",
+  "password": "12345678"
+}

@@ -1,0 +1,44 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /gateway
+spring:
+  application:
+    name: e-commerce-gateway  # 应用程序名称，也是构成Nacos配置管理中dataId字段的一部分
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848 # nacos服务地址,集群：server-addr: 127.0.0.1:8848,127.0.0.1:8858,127.0.0.1:8868
+        namespace: 6d22a47f-36f9-44bd-93f0-e076b0707139   # nacos命名空间
+        metadata:
+          management:
+            context-path: ${server.servlet.context-path}/actuator
+    # 静态路由
+#    gateway:
+#      routes:
+#        - id: path_route # 路由id
+#          url: 127.0.0.1/user/{id}  # 路径匹配成功后，转发的地址
+#          predicates: # 断言，判断是否需要路由，更多内置策略参考：https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gateway-request-predicates-factories
+#            - Path=/user/{id}
+
+  main:
+    allow-bean-definition-overriding: true  # 允许项目中存在重复的bean名称
+
+# nacos中的网关配置
+nacos:
+  gateway:
+    config:
+      router:
+        data-id: e-commerce-gateway-router
+        group: DEFAULT_GROUP
+
+# 暴露端点,以便commerce-admin服务可以详细展示当前服务的监控信息
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
