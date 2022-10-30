@@ -34,7 +34,7 @@ public class DataBaseDocTest {
 
     @Test
     public void generateDataBaseDoc() {
-        String filePath = "/Users/rainy/Developer/code/java/commerce";
+        String filePath = "/Users/rainy/Developer/code/java/e-commerce";
         EngineConfig engineConfig = EngineConfig.builder()
                 // 文档存放路径
                 .fileOutputDir(filePath)
@@ -63,7 +63,7 @@ public class DataBaseDocTest {
         // 数据库名称_description_version.html
         Configuration configuration = Configuration.builder()
                 .dataSource(applicationContext.getBean(DataSource.class))
-                .description("dev")
+                .description("database")
                 .version("1.0")
                 .engineConfig(engineConfig)
                 .produceConfig(processConfig)

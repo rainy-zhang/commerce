@@ -1,5 +1,5 @@
 -- t_user表
-CREATE TABLE IF NOT EXISTS `commerce`.`t_user` (
+CREATE TABLE IF NOT EXISTS `e-commerce`.`t_user` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `username` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
     `password` varchar(256) NOT NULL DEFAULT '' COMMENT 'MD5加密后的密码',
