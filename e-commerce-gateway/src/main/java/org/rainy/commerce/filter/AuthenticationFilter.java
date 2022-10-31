@@ -35,19 +35,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>
- * 请求鉴权过滤器
+ * 鉴权过滤器
  * </p>
  *
  * @author zhangyu
  */
 @Slf4j
 @Component
-public class AuthorityGlobalFilter implements GlobalFilter, Ordered {
+public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     private final RestTemplate restTemplate;
     private final LoadBalancerClient loadBalancerClient;
 
-    public AuthorityGlobalFilter(RestTemplate restTemplate, LoadBalancerClient loadBalancerClient) {
+    public AuthenticationFilter(RestTemplate restTemplate, LoadBalancerClient loadBalancerClient) {
         this.restTemplate = restTemplate;
         this.loadBalancerClient = loadBalancerClient;
     }

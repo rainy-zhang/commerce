@@ -1,7 +1,6 @@
 package org.rainy.commerce.service;
 
 import com.alibaba.nacos.common.codec.Base64;
-import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

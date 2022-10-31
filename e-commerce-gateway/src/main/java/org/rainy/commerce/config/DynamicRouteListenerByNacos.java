@@ -19,7 +19,7 @@ import java.util.concurrent.Executor;
 
 /**
  * <p>
- * 监听Nacos中路由配置变更，并下发动态路由配置
+ * 监听Nacos中路由配置变更，并将配置发送给Gateway
  * </p>
  *
  * @author zhangyu
@@ -39,21 +39,15 @@ public class DynamicRouteListenerByNacos {
     public void init() {
         try {
             // 初始化Nacos配置客户端
-            // Nacos 配置服务
             ConfigService configService = initConfigServer();
-            if (configService == null) {
-                log.error("nacos config init failed");
-                return;
-            }
-
-            // 通过NacosConfig获取路由配置
+            // 根据DataId和Group从Nacos中获取配置信息
             String configInfo = configService.getConfig(
                     GatewayConfig.NACOS_ROUTER_DATA_ID,
                     GatewayConfig.NACOS_ROUTER_GROUP,
                     GatewayConfig.DEFAULT_TIMEOUT
             );
 
-            log.info("get current gateway config info: [{}]", configInfo);
+            log.info("get current gateway route config info: [{}]", configInfo);
 
             List<RouteDefinition> definitions = JsonMapper.string2Object(configInfo, new TypeReference<>() {
             });
@@ -81,11 +75,13 @@ public class DynamicRouteListenerByNacos {
             properties.setProperty("namespace", GatewayConfig.NACOS_SERVER_NAMESPACE);
             return NacosFactory.createConfigService(properties);
         } catch (NacosException e) {
-            log.error("init nacos config error: [{}]", e.getMessage(), e);
-            return null;
+            throw new RuntimeException("nacos config create failed!", e);
         }
     }
 
+    /**
+     * Nacos中路由配置监听器
+     */
     private class NacosConfigListener implements Listener {
 
         // 这里可以自定义线程池，不指定的话默认使用内部的线程池
@@ -95,7 +91,7 @@ public class DynamicRouteListenerByNacos {
         }
 
         /**
-         * 接收到的配置信息
+         * Nacos中的配置信息发生变更时会回调此方法，并将最新的配置信息传递进来
          * @param configInfo Nacos中最新的配置信息
          */
         @Override

@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
  * <p>
  * 检查Header中是否包含Token
  * </p>
- *
+ * 
  * @author zhangyu
  */
 @Slf4j
@@ -26,11 +26,10 @@ public class CheckTokenFilter implements GatewayFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String name = request.getHeaders().getFirst("token");
-        if (!"e-commerce".equals(name)) {
+        if ("e-commerce".equals(name)) {
             return chain.filter(exchange);
         }
-        String uri = request.getURI().getPath();
-        log.warn("[{}] header not found [token], request end!", uri);
+        log.warn("not found token in header, request end!");
         ServerHttpResponse response = exchange.getResponse();
         // 将本次请求标记为没有权限
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -40,6 +39,6 @@ public class CheckTokenFilter implements GatewayFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return HIGHEST_PRECEDENCE;
     }
 }

@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 定义{@link CheckTokenFilter}过滤器工厂
+ * {@link CheckTokenFilter}过滤器工厂.
+ * CheckTokenGatewayFilterFactory 其中CheckToken为过滤器名称，GatewayFilterFactory是固定后缀 
  * </p>
  *
  * @author zhangyu

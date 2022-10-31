@@ -9,6 +9,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
@@ -23,7 +24,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Component
-public class CacheRequestBodyGlobalFilter implements GlobalFilter, Ordered {
+public class CacheRequestBodyFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -44,6 +45,7 @@ public class CacheRequestBodyGlobalFilter implements GlobalFilter, Ordered {
             ServerHttpRequest mutatedRequest = new ServerHttpRequestDecorator(exchange.getRequest()) {
                 // 重写getBody方法，并返回request body副本
                 @Override
+                @NonNull
                 public Flux<DataBuffer> getBody() {
                     return duplicateBody;
                 }

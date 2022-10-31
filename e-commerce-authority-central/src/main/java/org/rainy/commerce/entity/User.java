@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  * @author zhangyu
  */
 @Entity
-@Table(schema = "commerce", name = "t_user")
+@Table(schema = "e-commerce", name = "t_user")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Data

@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +40,7 @@ public class DynamicRouteEventPublisher implements ApplicationEventPublisherAwar
     }
 
     @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+    public void setApplicationEventPublisher(@NonNull ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
     }
 
@@ -56,35 +57,12 @@ public class DynamicRouteEventPublisher implements ApplicationEventPublisherAwar
     }
 
     /**
-     * 根据路由ID删除路由信息
-     * @param routeId 路由id
-     */
-    public void deleteRouteById(String routeId) {
-        this.definitionWriter.delete(Mono.just(routeId)).subscribe();
-        this.eventPublisher.publishEvent(new RefreshRoutesEvent(this));
-        log.info("gateway delete route id: [{}]", routeId);
-    }
-
-    /**
-     * 更新路由信息
-     * @param definition 路由信息
-     */
-    public void updateRouteDefinition(RouteDefinition definition) {
-        // 先删除
-        this.definitionWriter.delete(Mono.just(definition.getId()));
-        // 再新增
-        this.definitionWriter.save(Mono.just(definition));
-        log.info("gateway update route: [{}]", definition);
-    }
-
-    /**
      * 批量更新路由信息
      * @param definitions 全量的路由信息
      */
     public void batchUpdateRouteDefinition(List<RouteDefinition> definitions) {
         List<RouteDefinition> existDefinitions = this.definitionLocator.getRouteDefinitions().buffer().blockFirst();
         if (!Collections.isEmpty(existDefinitions)) {
-            // 这里之所以不去调用 deleteRouteById和addRouteDefinition 方法，是因为这两个方法每次都会发布刷新路由信息事件
             existDefinitions.forEach(definition -> this.definitionWriter.delete(Mono.just(definition.getId())).subscribe());
         }
         definitions.forEach(definition -> this.definitionWriter.save(Mono.just(definition)).subscribe());
