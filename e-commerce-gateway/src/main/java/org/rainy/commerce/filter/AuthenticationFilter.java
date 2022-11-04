@@ -95,6 +95,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         return HIGHEST_PRECEDENCE + 2;
     }
 
+    /**
+     * 通过授权中心服务获取token
+     * @param authorityCentralUrlFormat 授权中心的请求路径，其中ip和port部分需要动态拼接 
+     * @param requestBody 请求参数
+     * @return 授权中心返回的token
+     */
     private String getTokenFromAuthorityCentral(String authorityCentralUrlFormat, Object requestBody) {
         ServiceInstance serviceInstance = loadBalancerClient.choose(CommonConstant.AUTHORITY_SERVICE_ID);
         log.debug("authority central service info: [{}]", JsonMapper.object2String(serviceInstance));
@@ -116,6 +122,11 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         return null;
     }
 
+    /**
+     * 从request中获取body
+     * @param request 这里的request是{@link CacheRequestBodyFilter}过滤器包装过的
+     * @return request body
+     */
     private String getBodyFromRequest(ServerHttpRequest request) {
         Flux<DataBuffer> body = request.getBody();
         AtomicReference<String> bodyReference = new AtomicReference<>();

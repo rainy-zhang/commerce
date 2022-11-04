@@ -60,4 +60,5 @@ public class CacheRequestBodyFilter implements GlobalFilter, Ordered {
         // 其他过滤器如果想要获取缓存中的body，其getOrder的值需要大于 HIGHEST_PRECEDENCE + 1
         return HIGHEST_PRECEDENCE + 1;
     }
+    
 }

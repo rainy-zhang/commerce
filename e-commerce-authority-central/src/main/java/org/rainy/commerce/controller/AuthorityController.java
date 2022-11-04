@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *
+ * 授权接口
  * </p>
  *
  * @author zhangyu

@@ -51,6 +51,7 @@ public class AuthorityService {
         });
 
         User user = userRepository.save(User.convert(registerParam));
+        log.info("user register success: [{}]", user.getUsername());
         return jwtService.generateToken(user);
     }
 

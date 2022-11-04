@@ -7,6 +7,7 @@ import cn.smallbun.screw.core.engine.EngineTemplateType;
 import cn.smallbun.screw.core.execute.DocumentationExecute;
 import cn.smallbun.screw.core.process.ProcessConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.util.Collections;
 
 /**
@@ -27,14 +29,14 @@ import java.util.Collections;
 @Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class DataBaseDocTest {
+public class DataBaseDocCreator {
 
     @Autowired
     private ApplicationContext applicationContext;
 
     @Test
     public void generateDataBaseDoc() {
-        String filePath = "/Users/rainy/Developer/code/java/e-commerce";
+        String filePath = StringUtils.substringBeforeLast(System.getProperty("user.dir"), File.separator);
         EngineConfig engineConfig = EngineConfig.builder()
                 // 文档存放路径
                 .fileOutputDir(filePath)

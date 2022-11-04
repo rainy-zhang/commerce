@@ -25,7 +25,7 @@ spring:
     open-in-view: true
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/commerce?authReconnect=true&useUnicode=true
+    url: jdbc:mysql://127.0.0.1:3306/e-commerce?authReconnect=true&useUnicode=true
     username: root
     password: 12345678
     type: com.zaxxer.hikari.HikariDataSource
