@@ -21,6 +21,21 @@ spring:
         group: DEFAULT_GROUP
         namespace: 6d22a47f-36f9-44bd-93f0-e076b0707139
         server-addr: 127.0.0.1:8848
+        
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    producer:
+      retries: 3  # 生产者消息发送失败时的重试次数
+    consumer:
+      auto-offset-reset: latest # 消费者消费消息方式（从最近的开始消费）    
+  zipkin:
+    sender:
+      type: kafka   # 日志发送方式，默认是web
+    base-url: http://127.0.0.1:9411   # zipkin地址
+  sleuth:
+    sampler:  # Sleuth抽样策略 probability和rate只配置一个就好，通常使用数量限制的比较多
+      probability: 0.5  # 默认是0.1
+      rate: 100 # 限制每秒日志采集数量，优先级比 probability 高
 
 # 暴露端点,以便commerce-admin服务可以详细展示当前服务的监控信息
 management:

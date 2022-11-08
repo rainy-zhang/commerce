@@ -21,9 +21,20 @@ spring:
 #          url: 127.0.0.1/user/{id}  # 路径匹配成功后，转发的地址
 #          predicates: # 断言，判断是否需要路由，更多内置策略参考：https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gateway-request-predicates-factories
 #            - Path=/user/{id}
-
   main:
     allow-bean-definition-overriding: true  # 允许项目中存在重复的bean名称
+    
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    producer:
+      retries: 3  # 生产者消息发送失败时的重试次数
+    consumer:
+      auto-offset-reset: latest # 消费者消费消息方式（从最近的开始消费）    
+  zipkin:
+    sender:
+      type: kafka   # 日志发送方式，默认是web
+    base-url: http://127.0.0.1:9411   # zipkin地址
+
 
 # nacos中的网关配置
 nacos:
