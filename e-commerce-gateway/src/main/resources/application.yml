@@ -36,6 +36,7 @@ spring:
     base-url: http://127.0.0.1:9411   # zipkin地址
 
 
+
 # nacos中的网关配置
 nacos:
   gateway:
